@@ -154,7 +154,7 @@ public:
     double x = msg->linear.x, z = msg->angular.z;
     // ROS_INFO("Command motor to: %f, %f", x, z);
     this->linear_vel = x;
-    this->angular_vel = z;
+    this->angular_vel = -z;
     this->motor_timeout_timer =
       this->n.createTimer(ros::Duration(this->motor_timeout),
                           &ATRVNode::motor_timeoutCallback, this, true);
