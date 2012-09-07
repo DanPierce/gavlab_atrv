@@ -31,5 +31,4 @@
 
   <!-- Start the node that opens rviz -->
   <node pkg="rviz" name="visualization" type="rviz"/>
-  <node name="rviz" pkg="rviz" type="rviz" required="true" output="screen" args="-d $(find gavlab_atrv_2dnav)/config/slam/move_base.vcg" />
 </launch>
