@@ -1,6 +1,12 @@
+map_type: costmap
 obstacle_range: 30.0
+max_obstacle_height: 2.0
 raytrace_range: 15.0
+inscribed_radius: 0.35
+circumscribed_radius: 0.4
 footprint: [[-0.51, 0.42], [0.51, 0.42], [0.51, -0.42], [-0.50, -0.42]]
+cost_scaling_factor: 15.0
+lethal_cost_threshold: 100
 inflation_radius: 0.55
 
 transform_tolerance: 0.2 # Max running just hardware nodes is ~0.0006 secs according to tf_monitor
