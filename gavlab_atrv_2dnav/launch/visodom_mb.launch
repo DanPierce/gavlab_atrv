@@ -1,0 +1,64 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="front_port" default="/dev/atrv_front_wheels" />
+  <arg name="rear_port" default="/dev/atrv_rear_wheels" />
+
+  <!-- Start the laser range finder -->
+  <include file="$(find gavlab_atrv_launch)/launch/sick.xml"/>
+
+  <node pkg="gavlab_atrv_2dnav" type="odom_covariance.py" name="odom_covariance"/>
+
+  <!-- Start pose ekf-->
+  <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+    <param name="output_frame" value="odom_combined"/>
+    <param name="freq" value="30.0"/>
+    <param name="sensor_timeout" value="1.0"/>  
+    <param name="odom_used" value="true"/>
+    <param name="imu_used" value="false"/>
+    <param name="vo_used" value="true"/>
+
+    <remap from="vo" to="/viso/odom" />
+    <remap from="odom" to="/odom_covar" />
+  </node>
+
+  <!-- Start the asus -->
+  <include file="$(find pointcloud_shiz)/launch/ir_depth_cam.launch"/>
+
+  <!-- Start viso -->
+  <node pkg="viso2_ros" type="mono_odometer" name="viso">
+    <remap from="image" to="/camera/rgb/image_color"/>
+    <param name="camera_height" value="0.5"/>
+  </node>
+
+  <!-- Start the static transformations -->
+  <include file="$(find gavlab_atrv_launch)/launch/transforms.xml"/>
+
+  <!-- Start the node that interfaces with the motor controllers -->
+  <node pkg="gavlab_atrv_node" type="atrv_node" name="atrv_node"
+        output="screen" required="true">
+    <param name="front_port" value="$(arg front_port)" />
+    <param name="rear_port" value="$(arg rear_port)" />
+  </node>
+
+  <node pkg="gavlab_atrv_2dnav" type="odom_to_tf.py" name="odom_to_tf"/>
+  
+  <!-- Start the node that runs slam -->
+    <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+        <remap from="scan" to="scan_filtered"/>
+        <param name="delta" value="0.025"/>
+        <param name="xmin" value="-10"/>
+        <param name="xmax" value="10"/>
+        <param name="ymin" value="-10"/>
+        <param name="ymax" value="10"/>
+        <param name="temporalUpdate" value="0.1"/>
+        <param name="odom_frame" value="odom_combined"/>
+    </node>
+
+
+    <!-- Start the move_base Node -->
+    <include file="$(find gavlab_atrv_2dnav)/launch/move_base_slam.xml" />
+
+  <!-- Start the node that opens rviz -->
+  <node pkg="rviz" name="visualization" type="rviz"/>
+  <node name="rviz" pkg="rviz" type="rviz" required="true" output="screen" args="-d $(find gavlab_atrv_2dnav)/config/slam/move_base.vcg" />
+</launch>

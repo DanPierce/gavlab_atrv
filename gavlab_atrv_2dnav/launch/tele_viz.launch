@@ -43,8 +43,8 @@
     <remap from="cmd_vel" to="atrv_node/cmd_vel" />
   </node>
 
-  <include file="$(find pointcloud_shiz)/launch/ir_depth_cam.launch">
-  </include>
+<!--   <include file="$(find pointcloud_shiz)/launch/ir_depth_cam.launch">
+  </include> -->
 
   <!-- Start the node that opens rviz -->
   <node name="rviz" pkg="rviz" type="rviz" required="true" output="screen" args="-d $(find gavlab_atrv_2dnav)/config/tele_viz.vcg" />
