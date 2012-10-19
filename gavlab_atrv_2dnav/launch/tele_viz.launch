@@ -1,0 +1,51 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="front_port" default="/dev/atrv_front_wheels" />
+  <arg name="rear_port" default="/dev/atrv_rear_wheels" />
+
+  <!-- Start the laser range finder -->
+  <include file="$(find gavlab_atrv_launch)/launch/sick.xml"/>
+
+  <!-- Start the static transformations -->
+  <include file="$(find gavlab_atrv_launch)/launch/transforms.xml"/>
+
+  <!-- Start the node that interfaces with the motor controllers -->
+  <node pkg="gavlab_atrv_node" type="atrv_node" name="atrv_node"
+        output="screen" required="true">
+    <param name="front_port" value="$(arg front_port)" />
+    <param name="rear_port" value="$(arg rear_port)" />
+  </node>
+
+  <node pkg="gavlab_atrv_2dnav" type="odom_to_tf.py" name="odom_to_tf"/>
+  
+  <!-- Start the node that runs slam -->
+<!--     <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+        <remap from="scan" to="scan_filtered"/>
+        <param name="delta" value="0.025"/>
+        <param name="xmin" value="-10"/>
+        <param name="xmax" value="10"/>
+        <param name="ymin" value="-10"/>
+        <param name="ymax" value="10"/>
+        <param name="temporalUpdate" value="0.1"/>
+    </node> -->
+<!--   <include file="$(find octomap_server)/launch/octomap_mapping.launch"/> -->
+
+  <node pkg="joy" type="joy_node" name="joy_node" output="screen" 
+        required="true">
+    <param name="autorepeat_rate" value="5" type="double" />
+  </node>
+
+  <!-- Start the node that converts joy messages to cmd_vel's -->
+  <node pkg="joy_to_twist" type="joy_to_twist.py" name="atrv_joy_to_twist"
+        output="screen" required="true">
+    <param name="max_linear_vel" type="double" value="1.5" />
+    <param name="max_angular_vel" type="double" value="1.5" />
+    <remap from="cmd_vel" to="atrv_node/cmd_vel" />
+  </node>
+
+  <include file="$(find pointcloud_shiz)/launch/ir_depth_cam.launch">
+  </include>
+
+  <!-- Start the node that opens rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" required="true" output="screen" args="-d $(find gavlab_atrv_2dnav)/config/tele_viz.vcg" />
+</launch>
