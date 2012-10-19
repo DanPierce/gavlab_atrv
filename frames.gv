@@ -1,0 +1,20 @@
+digraph G {
+"/base_footprint" -> "/base_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.203 Hz\nMost recent transform: -0.462 sec old \nBuffer length: 4.940 sec\n"];
+"/odom_combined" -> "/base_footprint"[label="Broadcaster: /robot_pose_ekf\nAverage rate: 1250000.000 Hz\nMost recent transform: 27.456 sec old \nBuffer length: 0.000 sec\n"];
+"/base_link" -> "/imu_frame"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.203 Hz\nMost recent transform: -0.462 sec old \nBuffer length: 4.940 sec\n"];
+"/base_link" -> "/asus_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.203 Hz\nMost recent transform: -0.462 sec old \nBuffer length: 4.940 sec\n"];
+"/base_link" -> "/laser_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.203 Hz\nMost recent transform: -0.462 sec old \nBuffer length: 4.940 sec\n"];
+"/base_link" -> "/left_front_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.203 Hz\nMost recent transform: -0.462 sec old \nBuffer length: 4.940 sec\n"];
+"/base_link" -> "/left_rear_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.203 Hz\nMost recent transform: -0.462 sec old \nBuffer length: 4.940 sec\n"];
+"/base_link" -> "/right_front_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.203 Hz\nMost recent transform: -0.462 sec old \nBuffer length: 4.940 sec\n"];
+"/base_link" -> "/right_rear_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.203 Hz\nMost recent transform: -0.462 sec old \nBuffer length: 4.940 sec\n"];
+"/asus_link" -> "/asus_rgb_frame"[label="Broadcaster: /asus_base_link1\nAverage rate: 10.195 Hz\nMost recent transform: -0.030 sec old \nBuffer length: 4.904 sec\n"];
+"/map" -> "/odom_combined"[label="Broadcaster: /slam_gmapping\nAverage rate: 20.204 Hz\nMost recent transform: 0.037 sec old \nBuffer length: 4.900 sec\n"];
+"/asus_depth_frame" -> "/asus_depth_optical_frame"[label="Broadcaster: /asus_base_link2\nAverage rate: 10.191 Hz\nMost recent transform: -0.072 sec old \nBuffer length: 4.906 sec\n"];
+"/asus_link" -> "/asus_depth_frame"[label="Broadcaster: /asus_base_link\nAverage rate: 10.195 Hz\nMost recent transform: -0.096 sec old \nBuffer length: 4.905 sec\n"];
+"/asus_rgb_frame" -> "/asus_rgb_optical_frame"[label="Broadcaster: /asus_base_link3\nAverage rate: 10.199 Hz\nMost recent transform: -0.006 sec old \nBuffer length: 4.805 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1350667544.292"[ shape=plaintext ] ;
+ }->"/map";
+}

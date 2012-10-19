@@ -8,7 +8,7 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import String
 
 def callback(msg):
-    pub = rospy.Publisher("odom_covar", Odometry)
+    pub = rospy.Publisher("vo_covar", Odometry)
 
     corrected = Odometry()
     corrected.header.seq = msg.header.seq
@@ -34,13 +34,13 @@ def callback(msg):
     pub.publish(corrected)
 
 def listener():
-        rospy.Subscriber("/atrv_node/odom", Odometry, callback)
+        rospy.Subscriber("/viso/odometry", Odometry, callback)
         rospy.spin()
 
     
 
 if __name__ == '__main__':
-    rospy.init_node('odom_covariance')
+    rospy.init_node('vo_covariance')
     try:
         listener()
     except rospy.ROSInterruptException: pass
