@@ -33,6 +33,9 @@
     <!-- Start the move_base Node -->
     <include file="$(find gavlab_atrv_2dnav)/launch/move_base_slam.xml" />
 
+    <!-- Start the node to explore environment -->
+    <include file="$(find gavlab_atrv_2dnav)/launch/explore.xml"/>
+
   <!-- Start the node that opens rviz -->
   <node name="rviz" pkg="rviz" type="rviz" required="true" output="screen" args="-d $(find gavlab_atrv_2dnav)/config/slam/move_base.vcg" />
 </launch>
