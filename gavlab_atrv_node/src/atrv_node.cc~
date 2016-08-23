@@ -25,7 +25,6 @@
 #include <sstream>
 #include <cmath>
 
-
 #include <boost/thread.hpp>
 
 #include <ros/ros.h>
@@ -34,7 +33,7 @@
 #include <nav_msgs/Odometry.h>
 
 #include "gavlab_atrv_node/StampedEncoders.h"
-#include <odometer_base.h>
+
 #include "atrv/atrv.h"
 
 // Convenience variables
@@ -234,14 +233,12 @@ private:
 
     // Update the Odometry Msg
     this->odom_msg.header.stamp = now;
-    this->odom_msg.header.frame_id = "/odom";
+    this->odom_msg.header.frame_id = "odom";
     this->odom_msg.pose.pose.position.x = this->odometry_x;
     this->odom_msg.pose.pose.position.y = this->odometry_y;
     this->odom_msg.pose.pose.position.z = 0.0f;
     this->odom_msg.pose.pose.orientation =
       tf::createQuaternionMsgFromYaw(this->odometry_theta);
- 
-
     this->odom_msg.twist.twist.linear.x =
       (this->odometry_x - previous_x)/delta_time;
     this->odom_msg.twist.twist.linear.y =
@@ -249,7 +246,6 @@ private:
     this->odom_msg.twist.twist.linear.z = 0.0f;
     this->odom_msg.twist.twist.angular.z =
       (this->odometry_theta - previous_theta)/delta_time;
-
     // Publish the odometry msg
     this->odom_pub.publish(this->odom_msg);
 

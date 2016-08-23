@@ -111,6 +111,7 @@ ATRV::move(double linear_velocity, double angular_velocity) {
   // Issue command
   this->front_mc_.commandMotors(left_wheel_effort_, right_wheel_effort_);
   this->rear_mc_.commandMotors(left_wheel_effort_, right_wheel_effort_);
+
 }
 
 void
@@ -172,7 +173,9 @@ ATRV::connect_(MDC2250 *mc, size_t i, const std::string &port,
     // Setup encoder ppr
     std::string fail_why = "";
     std::stringstream cmd;
-    cmd << "^EPPR 1" << this->encoder_ppr_;
+
+    cmd.str("^EPPR 1");
+    cmd << this->encoder_ppr_;
     if (error_str.empty() && mc->issueCommand(cmd.str(), fail_why)) {
       error_str = fail_why;
     }
